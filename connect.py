@@ -125,7 +125,7 @@ WHERE TRADE_DT = {date_}""")
       yyyy = date_[:4]
       mm = date_[4:6]
       self._output(f'DATA/raw_prc/{yyyy}/{mm}/raw_prc.{date_}', force_)
-      print(f'rar_prc.{date_}')
+      print(f'raw_prc.{date_}')
 
   def output_citics_ind(self, force_= False):
     
