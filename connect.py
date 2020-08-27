@@ -73,7 +73,7 @@ def get_calendar_dates():
         dates.append(ln[:8])
   return dates
 
-def get_trd_dates(self, date_start=20150000):
+def get_trd_dates(date_start=20150000):
   dates = []
   with open('DATA/iso/trade_dates.iso', 'r') as rf:
     for ln in rf:
