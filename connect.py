@@ -150,7 +150,7 @@ ORDER BY ENTRY_DT""")
     #self.cursor.fetchall()
     with open('1.txt', 'w') as wf:
       for ln in self.cursor:
-        wf.write(ln,'\n')
+        wf.write(ln +'\n')
     self.cursor.execute(f"""SELECT {itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable
         WHERE EntryDate = {date_}""") 
     with open('2.txt', 'w') as wf:
