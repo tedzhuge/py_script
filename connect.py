@@ -155,7 +155,7 @@ ORDER BY ENTRY_DT""")
         WHERE EntryDate = {date_}""") 
     with open('2.txt', 'w') as wf:
       for ln in self.cursor:
-        wf.write(ln,'\n')
+        wf.write(ln + '\n')
 
   def output_dersub(self, force_=False):
     dates = get_calendar_dates()
