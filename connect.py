@@ -149,14 +149,17 @@ ORDER BY ENTRY_DT""")
         WHERE EntryDate = {date_}""") 
     data = self.cursor.fetchall()
     with open('1.txt', 'w') as wf:
-      for ln in data:
-        wf.write(ln +'\n')
+      for row in data:    
+        str_row = ','.join([str(elem) for elem in row])
+        wf.write(f'{str_row}\n')
+
     self.cursor.execute(f"""SELECT {itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable
         WHERE EntryDate = {date_}""") 
     data = self.cursor.fetchall()
     with open('2.txt', 'w') as wf:
-      for ln in data:
-        wf.write(ln + '\n')
+      for row in data:
+        str_row = ','.join([str(elem) for elem in row])
+        wf.write(f'{str_row}\n')
 
   def output_dersub(self, force_=False):
     dates = get_calendar_dates()
