@@ -142,21 +142,44 @@ ORDER BY ENTRY_DT""")
     
   def output_sample(self):
     date_ = 20150105
-    itms_DER_REPORT_RESEARCH=' ID, Code,Code_Name, Title, Type_ID,Organ_ID,Author, Score_ID,Organ_Score_ID, Create_Date, Pause_ID, Into_Date, Text1, Text3, Text5, Text6, Text8, Price_Current, Capital_Current, Forecast_Return, Expect_Max, Expect_Min, Text9, Text10, Attention, Attention_Name, Der_Report_Research.Score_Flag, EntryDate, EntryTime, TMStamp '
-    #itms_DER_REPORT_RESEARCH='Change, EntryDate, EntryTime, TMStamp'
-    itms_DER_REPORT_SUBTABLE='ID, Report_Search_ID, Time_Year, Quarter, Forecast_Income, Forecast_Profit,Forecast_Income_Share, Forecast_Return_Cash_Share, Forecast_Return_Capital_Share, Forecast_Return,  R_Tar1,R_Tar2, R_Tar3, R_Tar4, R_Tar5, R_Tar_Date1, R_Tar_Date2, Forecast_Income_0, Forecast_Profit_0, Profit_Flag, EntryDate, EntryTime, TMStamp'
-    self.cursor.execute(f"""SELECT {itms_DER_REPORT_RESEARCH} FROM Der_Report_Research
+    
+    #itms_DER_REPORT_RESEARCH=' Code,Code_Name, Title, Type_ID,Organ_ID,Author, Score_ID,Organ_Score_ID, Create_Date, Pause_ID, Into_Date, Text1, Text3, Text5, Text6, Text8, Price_Current, Capital_Current, Forecast_Return, Attention, Attention_Name,Score_Flag'
+    #itms_DER_REPORT_SUBTABLE='Time_Year, Quarter, Forecast_Income, Forecast_Profit,Forecast_Income_Share, Forecast_Return_Cash_Share, Forecast_Return_Capital_Share, Forecast_Return,  R_Tar1,R_Tar2, R_Tar3, R_Tar4, R_Tar5, R_Tar_Date1, R_Tar_Date2, Forecast_Income_0, Forecast_Profit_0, Profit_Flag, EntryDate, EntryTime '
+    
+    itms_DER_REPORT_RESEARCH=' b.Code, b.Code_Name, b.Title, b.Type_ID, b.Organ_ID,Author, b.Score_ID, b.Organ_Score_ID, b.Create_Date, b.Pause_ID, b.Into_Date, b.Text1, b.Text3, b.Text5, b.Text6, b.Text8, b.Price_Current, b.Capital_Current, b.Forecast_Return, b.Attention, b.Attention_Name, b.Score_Flag'
+    itms_DER_REPORT_SUBTABLE=' a.Time_Year, a.Quarter, a.Forecast_Income, a.Forecast_Profit, a.Forecast_Income_Share, a.Forecast_Return_Cash_Share, a.Forecast_Return_Capital_Share, a.Forecast_Return, a.R_Tar1, a.R_Tar2, a.R_Tar3, a.R_Tar4, a.R_Tar5, a.R_Tar_Date1, a.R_Tar_Date2, a.Forecast_Income_0, a.Forecast_Profit_0, a.Profit_Flag, a.EntryDate, a.EntryTime '
+    
+    
+
+    self.cursor.execute(f"""SELECT a.Report_Search_ID, {itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable AS a
         WHERE EntryDate = {date_}""") 
     data = self.cursor.fetchall()
-    with open('1.txt', 'w') as wf:
+    with open('a.txt', 'w') as wf:
+      for row in data:
+        str_row = ','.join([str(elem) for elem in row])
+        wf.write(f'{str_row}\n')
+    
+    
+    self.cursor.execute(f"""SELECT b.ID,  {itms_DER_REPORT_RESEARCH} FROM Der_Report_Research AS b
+        WHERE EntryDate = {date_}""") 
+    data = self.cursor.fetchall()
+    with open('b.txt', 'w') as wf:
       for row in data:    
         str_row = ','.join([str(elem) for elem in row])
         wf.write(f'{str_row}\n')
 
-    self.cursor.execute(f"""SELECT {itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable
-        WHERE EntryDate = {date_}""") 
+
+
+    self.cursor.execute(f"""
+    SELECT a.Report_Search_ID, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
+    (SELECT * FROM Der_Report_Subtable
+        WHERE EntryDate = {date_}) AS a
+        LEFT JOIN （SELECT * FROM Der_Report_Research AS b
+        WHERE EntryDate = {date_}） AS b
+        ON a.Report_Search_ID = b.ID
+        """) 
     data = self.cursor.fetchall()
-    with open('2.txt', 'w') as wf:
+    with open('c.txt', 'w') as wf:
       for row in data:
         str_row = ','.join([str(elem) for elem in row])
         wf.write(f'{str_row}\n')
