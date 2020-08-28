@@ -174,8 +174,7 @@ ORDER BY ENTRY_DT""")
     SELECT a.Report_Search_ID, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
     (SELECT * FROM Der_Report_Subtable
         WHERE EntryDate = {date_}) AS a
-        LEFT JOIN （SELECT * FROM Der_Report_Research AS b
-        WHERE EntryDate = {date_}） AS b
+        LEFT JOIN （SELECT * FROM Der_Report_Research WHERE EntryDate = {date_}） AS b
         ON a.Report_Search_ID = b.ID
         """) 
     data = self.cursor.fetchall()
