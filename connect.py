@@ -141,6 +141,7 @@ ORDER BY ENTRY_DT""")
     self._output('DATA/iso/code_ind.iso', force_)
     
   def output_sample(self):
+    date_ = 20150105
     itms_DER_REPORT_RESEARCH='''ID, Code,Code_Name,  Title,Content, Type_ID,Organ_ID,Author, Score_ID,Organ_Score_ID, Create_Date, 
     Pause_ID, Into_Date, Text1, Text2, Text3, Text4, Text5, Text6, Text7	, Text8, Price_Current, Capital_Current, Forecast_Return, 
     Expect_Max, Expect_Min, Text9, Text10, Attention, Attention_Name, Score_Flag, Change,EntryDate, EntryTime,TMStamp
