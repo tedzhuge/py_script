@@ -140,9 +140,27 @@ ORDER BY ENTRY_DT""")
 """)
     self._output('DATA/iso/code_ind.iso', force_)
     
+  def output_sample(self):
+    itms_DER_REPORT_RESEARCH='''ID, Code,Code_Name,  Title,Content, Type_ID,Organ_ID,Author, Score_ID,Organ_Score_ID, Create_Date, 
+    Pause_ID, Into_Date, Text1, Text2, Text3, Text4, Text5, Text6, Text7	, Text8, Price_Current, Capital_Current, Forecast_Return, 
+    Expect_Max, Expect_Min, Text9, Text10, Attention, Attention_Name, Score_Flag, Change,EntryDate, EntryTime,TMStamp
+    '''
+    
+    itms_DER_REPORT_SUBTABLE='''
+    ID, Report_Search_ID, Origin_Report_Search_ID, Time_Year, Quarter, Forecast_Income, Forecast_Profit,Forecast_Income_Share, 
+    Forecast_Return_Cash_Share, Forecast_Return_Capital_Share, Forecast_Return,  R_Tar1,R_Tar2, R_Tar3, R_Tar4, R_Tar5, R_Tar_Date1, R_Tar_Date2, Forecast_Income_0, 
+    Forecast_Profit_0, Profit_Flag, EntryDate, EntryTime, TMStamp
+    '''
+    self.cursor.execute(f"""SELECT {itms_DER_REPORT_RESEARCH} FROM DER_REPORT_RESEARCH
+        WHERE EntryDate = {date_}""") 
+    self.cursor.fetchall()
+    self.cursor.execute(f"""SELECT {itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable
+        WHERE EntryDate = {date_}""") 
+    
   def output_dersub(self, force_=False):
     dates = get_calendar_dates()
     for date_ in dates:
+      #
       self.cursor.execute(f"""SELECT * FROM Der_Report_Subtable
         WHERE EntryDate = {date_}""")      
       yyyy = date_[:4]
