@@ -171,9 +171,9 @@ ORDER BY ENTRY_DT""")
 #SELECT a.Report_Search_ID, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
 
     self.cursor.execute(f"""
-        SELECT * FROM   
-               (SELECT * FROM Der_Report_Subtable WHERE EntryDate = {date_}) a
-    LEFT JOIN (SELECT * FROM Der_Report_Research WHERE EntryDate = {date_}) b
+       SELECT a.Report_Search_ID, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
+               (SELECT a.Report_Search_ID, {itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable AS a WHERE EntryDate = {date_}) a
+    LEFT JOIN (SELECT b.ID, {itms_DER_REPORT_RESEARCH} FROM Der_Report_Research WHERE EntryDate = {date_}) b
         ON b.ID = a.Report_Search_ID
         """) 
     data = self.cursor.fetchall()
