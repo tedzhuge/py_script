@@ -143,8 +143,8 @@ ORDER BY ENTRY_DT""")
   def output_sample(self):
     date_ = 20150105
     
-    _itms_DER_REPORT_RESEARCH=' Code,Code_Name, Title, Type_ID,Organ_ID,Author, Score_ID,Organ_Score_ID, Create_Date, Pause_ID, Into_Date, Text1, Text3, Text5, Text6, Text8, Price_Current, Capital_Current, Forecast_Return, Attention, Attention_Name,Score_Flag'
-    _itms_DER_REPORT_SUBTABLE='Time_Year, Quarter, Forecast_Income, Forecast_Profit,Forecast_Income_Share, Forecast_Return_Cash_Share, Forecast_Return_Capital_Share, Forecast_Return,  R_Tar1,R_Tar2, R_Tar3, R_Tar4, R_Tar5, R_Tar_Date1, R_Tar_Date2, Forecast_Income_0, Forecast_Profit_0, Profit_Flag, EntryDate, EntryTime '
+    # _itms_DER_REPORT_RESEARCH=' Code,Code_Name, Title, Type_ID,Organ_ID,Author, Score_ID,Organ_Score_ID, Create_Date, Pause_ID, Into_Date, Text1, Text3, Text5, Text6, Text8, Price_Current, Capital_Current, Forecast_Return, Attention, Attention_Name,Score_Flag'
+    # _itms_DER_REPORT_SUBTABLE='Time_Year, Quarter, Forecast_Income, Forecast_Profit,Forecast_Income_Share, Forecast_Return_Cash_Share, Forecast_Return_Capital_Share, Forecast_Return,  R_Tar1,R_Tar2, R_Tar3, R_Tar4, R_Tar5, R_Tar_Date1, R_Tar_Date2, Forecast_Income_0, Forecast_Profit_0, Profit_Flag, EntryDate, EntryTime '
     
     itms_DER_REPORT_RESEARCH=' b.Code, b.Code_Name, b.Title, b.Type_ID, b.Organ_ID,Author, b.Score_ID, b.Organ_Score_ID, b.Create_Date, b.Pause_ID, b.Into_Date, b.Text1, b.Text3, b.Text5, b.Text6, b.Text8, b.Price_Current, b.Capital_Current, b.Forecast_Return, b.Attention, b.Attention_Name, b.Score_Flag'
     itms_DER_REPORT_SUBTABLE=' a.Time_Year, a.Quarter, a.Forecast_Income, a.Forecast_Profit, a.Forecast_Income_Share, a.Forecast_Return_Cash_Share, a.Forecast_Return_Capital_Share, a.Forecast_Return, a.R_Tar1, a.R_Tar2, a.R_Tar3, a.R_Tar4, a.R_Tar5, a.R_Tar_Date1, a.R_Tar_Date2, a.Forecast_Income_0, a.Forecast_Profit_0, a.Profit_Flag, a.EntryDate, a.EntryTime '
@@ -182,17 +182,43 @@ ORDER BY ENTRY_DT""")
         str_row = ','.join([str(elem) for elem in row])
         wf.write(f'{str_row}\n')
 
-  def output_dersub(self, force_=False):
-    dates = get_calendar_dates()
-    for date_ in dates:
-      #
-      self.cursor.execute(f"""SELECT * FROM Der_Report_Subtable
-        WHERE EntryDate = {date_}""")      
-      yyyy = date_[:4]
-      mm = date_[4:6]
-      dd = date_[6:8]
-      self._output(f'DATA/gg/data/{yyyy}/{mm}/{dd}/dersub.{date_}')
-      print(f'dersub.{date_}')
+  def output_dersub(self):
+    calendar_dates = get_calendar_dates()
+    cd_sz = len(calendar_dates)
+    trd_dates = get_trd_dates()
+    
+    itms_DER_REPORT_RESEARCH=' b.Code, b.Code_Name, b.Title, b.Type_ID, b.Organ_ID,Author, b.Score_ID, b.Organ_Score_ID, b.Create_Date, b.Pause_ID, b.Into_Date, b.Text1, b.Text3, b.Text5, b.Text6, b.Text8, b.Price_Current, b.Capital_Current, b.Forecast_Return, b.Attention, b.Attention_Name, b.Score_Flag'
+    itms_DER_REPORT_SUBTABLE=' a.Time_Year, a.Quarter, a.Forecast_Income, a.Forecast_Profit, a.Forecast_Income_Share, a.Forecast_Return_Cash_Share, a.Forecast_Return_Capital_Share, a.Forecast_Return, a.R_Tar1, a.R_Tar2, a.R_Tar3, a.R_Tar4, a.R_Tar5, a.R_Tar_Date1, a.R_Tar_Date2, a.Forecast_Income_0, a.Forecast_Profit_0, a.Profit_Flag, a.EntryDate, a.EntryTime '
+
+    idx_ = 0
+    for trd_date_ in trd_dates:
+      
+      yyyy = trd_date_[:4]
+      mm = trd_date_[4:6]
+      dd = trd_date_[6:8]
+
+      output_path = f'DATA/gg/data1/{yyyy}/{mm}/{dd}/dersub.{trd_date_}'
+      wf=open(name, 'w')
+      wf.close()
+      while calendar_dates[idx_] <= trd_date_:
+        print(f'{c_date_} into {trd_date_}')
+        c_date_ = calendar_dates[idx_]
+        self.cursor.execute(ff"""
+       SELECT a.Report_Search_ID, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
+               (SELECT Report_Search_ID, {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
+    LEFT JOIN (SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research WHERE EntryDate = {c_date_}) b
+        ON b.ID = a.Report_Search_ID
+        """) 
+        data = self.cursor.fetchall()
+        
+        with open(output_path, 'a') as f:
+          for row in data:
+            
+            str_row = ','.join([str(elem) for elem in row])
+            f.write(f'{str_row}\n')
+
+        idx_ += 1
+      
 
   def fetchall(self):
     self.data = self.cursor.fetchall()
