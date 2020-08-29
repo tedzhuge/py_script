@@ -201,7 +201,7 @@ ORDER BY ENTRY_DT""")
       dd = trd_date_[6:8]
 
       output_path = f'DATA/gg/data1/{yyyy}/{mm}/{dd}/dersub.{trd_date_}'
-      wf=open(name, 'w')
+      wf=open(output_path, 'w')
       wf.close()
       while calendar_dates[idx_] <= trd_date_:
         print(f'{c_date_} into {trd_date_}')
