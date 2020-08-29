@@ -203,7 +203,7 @@ ORDER BY ENTRY_DT""")
       while calendar_dates[idx_] <= trd_date_:
         print(f'{c_date_} into {trd_date_}')
         c_date_ = calendar_dates[idx_]
-        self.cursor.execute(ff"""
+        self.cursor.execute(f"""
        SELECT a.Report_Search_ID, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
                (SELECT Report_Search_ID, {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
     LEFT JOIN (SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research WHERE EntryDate = {c_date_}) b
