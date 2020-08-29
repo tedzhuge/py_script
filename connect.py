@@ -83,7 +83,7 @@ def get_trd_dates(date_start=20150000):
         if date > date_start:
           dates.append(itm[0])
   return dates
-
+  
 class Cn:
   def __init__(self, name):
     self.cn_ = mysql.connector.connect(**name)
@@ -204,8 +204,8 @@ ORDER BY ENTRY_DT""")
       wf=open(output_path, 'w')
       wf.close()
       while calendar_dates[idx_] <= trd_date_:
-        print(f'{c_date_} into {trd_date_}')
         c_date_ = calendar_dates[idx_]
+        print(f'{c_date_} into {trd_date_}')
         self.cursor.execute(f"""
        SELECT a.Report_Search_ID, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
                (SELECT Report_Search_ID, {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
