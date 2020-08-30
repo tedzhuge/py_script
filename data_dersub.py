@@ -175,7 +175,7 @@ class Cn:
     ]
     
     _itms_DER_REPORT_RESEARCH=','.join(LIST_DER_REPORT_RESEARCH)
-    self.cursor.execute(f'SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research')
+    self.cursor.execute(f'SELECT ID, {_itms_DER_REPORT_RESEARCH},EntryDate,EntryTime FROM Der_Report_Research')
     data = self.cursor.fetchall()
     with open('DATA/gg/report.iso', 'w') as wf:
       for row in data:
