@@ -143,9 +143,9 @@ class Cn:
         with open(output_path, 'a') as f:
           id= 0
           for row in data:
-            rec_tm = row[0].strftime('%Y%m%d') + row[1].replace(':','')
-            str_row = f'{id},' + rec_tm + ',' + ','.join([str(elem) for elem in row[2:]])
-            f.write(f'{str_row}\n')
+            rec_tm =  + ',' + 
+            str_row = f'{id},{row[0].strftime('%Y%m%d')},{row[1].replace(':','')},{','.join([str(elem) for elem in row[2:]])}\n'
+            f.write(f'{str_row}')
             id+=1
         idx_ += 1
       
