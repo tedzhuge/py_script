@@ -70,24 +70,25 @@ class Cn:
     LIST_DER_REPORT_SUBTABLE = [
       'EntryDate',#0
       'EntryTime',#1
-      'Time_Year',#2
-      'Quarter',#3
-      'Forecast_Income',#4
-      'Forecast_Profit',#5
-      'Forecast_Income_Share',#6
-      'Forecast_Return_Cash_Share',#7
-      'Forecast_Return_Capital_Share',#8
-      'Forecast_Return',#9
-      'R_Tar1',#10
-      'R_Tar2',#11
-      'R_Tar3',#12
-      'R_Tar4',#13
-      'R_Tar5',#14
-      'R_Tar_Date1',#15
-      'R_Tar_Date2',#16
-      'Forecast_Income_0',#17
-      'Forecast_Profit_0',#18
-      'Profit_Flag'#19
+      'Report_Search_ID',#2
+      'Time_Year',#3
+      'Quarter',#4
+      'Forecast_Income',#5
+      'Forecast_Profit',#6
+      'Forecast_Income_Share',#7
+      'Forecast_Return_Cash_Share',#8
+      'Forecast_Return_Capital_Share',#9
+      'Forecast_Return',#10
+      'R_Tar1',#11
+      'R_Tar2',#12
+      'R_Tar3',#13
+      'R_Tar4',#14
+      'R_Tar5',#15
+      'R_Tar_Date1',#16
+      'R_Tar_Date2',#17
+      'Forecast_Income_0',#18
+      'Forecast_Profit_0',#19
+      'Profit_Flag'#20
     ]
     LIST_DER_REPORT_RESEARCH=[
       'Code',#0
@@ -134,7 +135,7 @@ class Cn:
         print(f'{c_date_} into dersub.{trd_date_}')
         self.cursor.execute(f"""
        SELECT  {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
-               (SELECT Report_Search_ID, {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
+               (SELECT  {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
     LEFT JOIN (SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research WHERE EntryDate = {c_date_}) b
         ON b.ID = a.Report_Search_ID
         ORDER BY a.EntryDate, a.EntryTime
