@@ -69,7 +69,7 @@ class Cn:
 
     LIST_DER_REPORT_SUBTABLE = [
       'EntryDate',#0
-      'EntryTime'#1
+      'EntryTime',#1
       'Time_Year',#2
       'Quarter',#3
       'Forecast_Income',#4
@@ -87,7 +87,7 @@ class Cn:
       'R_Tar_Date2',#16
       'Forecast_Income_0',#17
       'Forecast_Profit_0',#18
-      'Profit_Flag',#19
+      'Profit_Flag'#19
     ]
     LIST_DER_REPORT_RESEARCH=[
       'Code',#0
