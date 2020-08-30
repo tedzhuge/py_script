@@ -68,30 +68,24 @@ class Cn:
     trd_dates = get_trd_dates()
 
     LIST_DER_REPORT_SUBTABLE = [
-      'EntryDate',#0
-      'EntryTime',#1
-      'Report_Search_ID',#2
-      'Time_Year',#3
-      'Quarter',#4
-      'Forecast_Income',#5
-      'Forecast_Profit',#6
-      'Forecast_Income_Share',#7
-      'Forecast_Return_Cash_Share',#8
-      'Forecast_Return_Capital_Share',#9
-      'Forecast_Return',#10
-      'R_Tar1',#11
-      'R_Tar2',#12
-      'R_Tar3',#13
-      'R_Tar4',#14
-      'R_Tar5',#15
-      'R_Tar_Date1',#16
-      'R_Tar_Date2',#17
-      'Forecast_Income_0',#18
-      'Forecast_Profit_0',#19
-      'Profit_Flag'#20
+      'Time_Year',#0,+3
+      'Quarter',#1
+      'Forecast_Income',#2
+      'Forecast_Profit',#3
+      'Forecast_Income_Share',#4
+      'Forecast_Return_Cash_Share',#5
+      'Forecast_Return_Capital_Share',#6
+      'Forecast_Return',#7
+      'R_Tar1',#8
+      'R_Tar2',#9
+      'R_Tar3',#10
+      'R_Tar5',#11
+      'Forecast_Income_0',#12
+      'Forecast_Profit_0',#13
+      'Profit_Flag'#14
     ]
     LIST_DER_REPORT_RESEARCH=[
-      'Code',#0
+      'Code',#0,+18
       'Code_Name',#1
       'Title',#2
       'Type_ID',#3
@@ -102,14 +96,12 @@ class Cn:
       'Create_Date',#8
       'Into_Date',#9
       'Text1',#10
-      'Text3',#11
-      'Text5',#12
-      'Text6',#13
-      'Text8',#14
-      'Price_Current',#15
-      'Attention',#16
-      'Attention_Name',#17
-      'Score_Flag'#18
+      'Text5',#11
+      'Text8',#12
+      'Price_Current',#13
+      'Attention',#14
+      'Attention_Name',#15
+      'Score_Flag'#16
     ]
 
 
@@ -134,11 +126,14 @@ class Cn:
         c_date_ = calendar_dates[idx_]
         print(f'{c_date_} into dersub.{trd_date_}')
         #(SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research WHERE EntryDate = {c_date_}) b
+        #(SELECT  {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
+        #
         self.cursor.execute(f"""
-       SELECT  {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
-               (SELECT  {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
-    LEFT JOIN Der_Report_Research b
-        ON b.ID = a.Report_Search_ID
+       SELECT a.EntryDate, a.EntryTime, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH}, a.Report_Search_ID FROM Der_Report_Subtable a
+       
+        LEFT JOIN Der_Report_Research b
+          ON b.ID = a.Report_Search_ID
+        WHERE EntryDate = {c_date_}) a
         ORDER BY a.EntryDate, a.EntryTime
         """) 
         data = self.cursor.fetchall()
@@ -146,7 +141,7 @@ class Cn:
         with open(output_path, 'a') as f:
           id= 0
           for row in data:
-            #320+19
+            #3+15+17+1
             str_row = f"{id},{row[0].strftime('%Y%m%d')},{row[1].replace(':','')},{','.join([str(elem) for elem in row[2:]])}\n"
             f.write(f'{str_row}')
             id+=1
@@ -165,14 +160,12 @@ class Cn:
       'Create_Date',#8
       'Into_Date',#9
       'Text1',#10
-      'Text3',#11
-      'Text5',#12
-      'Text6',#13
-      'Text8',#14
-      'Price_Current',#15
-      'Attention',#16
-      'Attention_Name',#17
-      'Score_Flag'#18
+      'Text5',#11
+      'Text8',#12
+      'Price_Current',#13
+      'Attention',#14
+      'Attention_Name',#15
+      'Score_Flag'#16
     ]
     
     _itms_DER_REPORT_RESEARCH=','.join(LIST_DER_REPORT_RESEARCH)
