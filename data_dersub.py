@@ -137,13 +137,14 @@ class Cn:
                (SELECT Report_Search_ID, {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
     LEFT JOIN (SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research WHERE EntryDate = {c_date_}) b
         ON b.ID = a.Report_Search_ID
+        ORDER BY a.EntryDate, a.EntryTime
         """) 
         data = self.cursor.fetchall()
         
         with open(output_path, 'a') as f:
           id= 0
           for row in data:
-            
+            #320+19
             str_row = f"{id},{row[0].strftime('%Y%m%d')},{row[1].replace(':','')},{','.join([str(elem) for elem in row[2:]])}\n"
             f.write(f'{str_row}')
             id+=1
