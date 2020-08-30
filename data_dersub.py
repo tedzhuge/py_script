@@ -126,7 +126,7 @@ class Cn:
       mm = trd_date_[4:6]
       dd = trd_date_[6:8]
 
-      output_path = f'DATA/gg/data1/{yyyy}/{mm}/{dd}/dersub.{trd_date_}'
+      output_path = f'DATA/gg/data/{yyyy}/{mm}/{dd}/dersub.{trd_date_}'
       wf=open(output_path, 'w')
       wf.close()
       while calendar_dates[idx_] <= trd_date_:
@@ -143,10 +143,10 @@ class Cn:
         with open(output_path, 'a') as f:
           id= 0
           for row in data:
-            rec_tm = r[0][:9] + row[1].replace(':','')
+            rec_tm = row[0][:9] + row[1].replace(':','')
             str_row = f'{id},' + rec_tm + ',' + ','.join([str(elem) for elem in row[2:]])
             f.write(f'{str_row}\n')
-
+            id+=1
         idx_ += 1
       
       
