@@ -131,7 +131,7 @@ class Cn:
       wf.close()
       while calendar_dates[idx_] <= trd_date_:
         c_date_ = calendar_dates[idx_]
-        print(f'{c_date_} into {trd_date_}')
+        print(f'{c_date_} into dersub.{trd_date_}')
         self.cursor.execute(f"""
        SELECT  {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
                (SELECT Report_Search_ID, {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
@@ -143,7 +143,7 @@ class Cn:
         with open(output_path, 'a') as f:
           id= 0
           for row in data:
-            rec_tm = row[0][:9] + row[1].replace(':','')
+            rec_tm = row[0].strftime('%Y%m%d') + row[1].replace(':','')
             str_row = f'{id},' + rec_tm + ',' + ','.join([str(elem) for elem in row[2:]])
             f.write(f'{str_row}\n')
             id+=1
