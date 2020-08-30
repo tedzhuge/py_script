@@ -133,10 +133,11 @@ class Cn:
       while calendar_dates[idx_] <= trd_date_:
         c_date_ = calendar_dates[idx_]
         print(f'{c_date_} into dersub.{trd_date_}')
+        #(SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research WHERE EntryDate = {c_date_}) b
         self.cursor.execute(f"""
        SELECT  {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
                (SELECT  {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
-    LEFT JOIN (SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research WHERE EntryDate = {c_date_}) b
+    LEFT JOIN Der_Report_Research b
         ON b.ID = a.Report_Search_ID
         ORDER BY a.EntryDate, a.EntryTime
         """) 
