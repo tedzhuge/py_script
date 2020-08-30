@@ -151,7 +151,14 @@ class Cn:
             id+=1
         idx_ += 1
       
-      
+  def output_research(self):
+    self.cursor.execute(f'SELECT * from FROM Der_Report_Research')
+    data = self.cursor.fetchall()
+    with open('DATA/gg/report.iso', 'w') as wf:
+      for row in data:
+        str_row = ','.join([str(elem) for elem in row])
+        f.write(f'{str_row}\n')
+
 
   def fetchall(self):
     self.data = self.cursor.fetchall()
