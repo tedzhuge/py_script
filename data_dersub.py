@@ -129,11 +129,11 @@ class Cn:
         #(SELECT  {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
         #
         self.cursor.execute(f"""
-       SELECT a.EntryDate, a.EntryTime, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH}, a.Report_Search_ID FROM Der_Report_Subtable a
-       
+        SELECT a.EntryDate, a.EntryTime, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH}, a.Report_Search_ID 
+        FROM Der_Report_Subtable a
         LEFT JOIN Der_Report_Research b
           ON b.ID = a.Report_Search_ID
-        WHERE EntryDate = {c_date_}) a
+        WHERE a.EntryDate = {c_date_} 
         ORDER BY a.EntryDate, a.EntryTime
         """) 
         data = self.cursor.fetchall()
