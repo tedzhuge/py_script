@@ -157,7 +157,7 @@ class Cn:
     with open('DATA/gg/report.iso', 'w') as wf:
       for row in data:
         str_row = ','.join([str(elem) for elem in row])
-        f.write(f'{str_row}\n')
+        wf.write(f'{str_row}\n')
 
 
   def fetchall(self):
