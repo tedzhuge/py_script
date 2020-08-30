@@ -152,7 +152,7 @@ class Cn:
         idx_ += 1
       
   def output_research(self):
-    self.cursor.execute(f'SELECT * from FROM Der_Report_Research')
+    self.cursor.execute(f'SELECT *  FROM Der_Report_Research')
     data = self.cursor.fetchall()
     with open('DATA/gg/report.iso', 'w') as wf:
       for row in data:
