@@ -141,9 +141,10 @@ class Cn:
         data = self.cursor.fetchall()
         
         with open(output_path, 'a') as f:
+          id= 0
           for row in data:
-            rec_time = r[0][:9] + row[1].replace(':','')
-            str_row =  + ',' + ','.join([str(elem) for elem in row[2:]])
+            rec_tm = r[0][:9] + row[1].replace(':','')
+            str_row = f'{id},' + rec_tm + ',' + ','.join([str(elem) for elem in row[2:]])
             f.write(f'{str_row}\n')
 
         idx_ += 1
