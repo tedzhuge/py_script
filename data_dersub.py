@@ -144,7 +144,7 @@ class Cn:
           id= 0
           for row in data:
             
-            str_row = f'{id},{row[0].strftime('%Y%m%d')},{row[1].replace(':','')},{','.join([str(elem) for elem in row[2:]])}\n'
+            str_row = f"{id},{row[0].strftime('%Y%m%d')},{row[1].replace(':','')},{','.join([str(elem) for elem in row[2:]])}\n"
             f.write(f'{str_row}')
             id+=1
         idx_ += 1
