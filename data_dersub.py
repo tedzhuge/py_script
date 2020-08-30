@@ -152,7 +152,30 @@ class Cn:
         idx_ += 1
       
   def output_research(self):
-    self.cursor.execute(f'SELECT *  FROM Der_Report_Research')
+    LIST_DER_REPORT_RESEARCH=[
+      'Code',#0
+      'Code_Name',#1
+      'Title',#2
+      'Type_ID',#3
+      'Organ_ID',#4
+      'Author',#5
+      'Score_ID',#6
+      'Organ_Score_ID',#7
+      'Create_Date',#8
+      'Into_Date',#9
+      'Text1',#10
+      'Text3',#11
+      'Text5',#12
+      'Text6',#13
+      'Text8',#14
+      'Price_Current',#15
+      'Attention',#16
+      'Attention_Name',#17
+      'Score_Flag'#18
+    ]
+    
+    _itms_DER_REPORT_RESEARCH=','.join(LIST_DER_REPORT_RESEARCH)
+    self.cursor.execute(f'SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research')
     data = self.cursor.fetchall()
     with open('DATA/gg/report.iso', 'w') as wf:
       for row in data:
