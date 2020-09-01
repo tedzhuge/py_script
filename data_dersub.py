@@ -141,7 +141,7 @@ class Cn:
         with open(output_path, 'a') as f:
           id= 0
           for row in data:
-            #3+15+17+1
+            #3+15+17+1=36
             str_row = f"{id}|{row[0].strftime('%Y%m%d')}|{row[1].replace(':','')}|{'|'.join([str(elem) for elem in row[2:]])}\n"
             f.write(f'{str_row}')
             id+=1

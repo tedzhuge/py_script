@@ -140,6 +140,13 @@ ORDER BY ENTRY_DT""")
 """)
     self._output('DATA/iso/code_ind.iso', force_)
     
+  def output_shares(self, force = False):
+    self.cursor.execute(f"""SELECT S_INFO_WINDCODE, ANN_DT, CHANGE_DT, CHANGE_DT1， 
+    TOT_SHR, FLOAT_SHR, NON_TRADABLE_SHR, S_SHARE_TOTALA, FLOAT_A_SHR, RESTRICTED_A_SHR,FLOAT_B_SHR, FLOAT_H_SHR, FLOAT_OVERSEAS_SHR,	
+    S_SHARE_TOTALTRADABLE, S_SHARE_TOTALRESTRICTED
+      	FROM ASHARECAPITALIZATION""")
+    self._output(f'DATA/iso/shares.iso', force_)
+
   def output_sample(self):
     date_ = 20150105
     
