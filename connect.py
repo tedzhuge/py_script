@@ -118,10 +118,10 @@ class Cn:
     dates = get_trd_dates(date_start)
     for date_ in dates:
       self.cursor.execute(f"""SELECT S_INFO_WINDCODE, CRNCY_CODE, S_DQ_PRECLOSE, S_DQ_OPEN, S_DQ_CLOSE, S_DQ_HIGH, 
-S_DQ_LOW, S_DQ_PCTCHANGE, S_DQ_VOLUME, S_DQ_AMOUNT, S_DQ_ADJPRECLOSE, S_DQ_ADJOPEN, S_DQ_ADJCLOSE, S_DQ_ADJHIGH
-, S_DQ_ADJLOW,S_DQ_ADJFACTOR, S_DQ_AVGPRICE, S_DQ_TRADESTATUS, S_DQ_TRADESTATUSCODE
-FROM ASHAREEODPRICES 
-WHERE TRADE_DT = {date_}""")
+        S_DQ_LOW, S_DQ_PCTCHANGE, S_DQ_VOLUME, S_DQ_AMOUNT, S_DQ_ADJPRECLOSE, S_DQ_ADJOPEN, S_DQ_ADJCLOSE, S_DQ_ADJHIGH
+        , S_DQ_ADJLOW,S_DQ_ADJFACTOR, S_DQ_AVGPRICE, S_DQ_TRADESTATUS, S_DQ_TRADESTATUSCODE
+        FROM ASHAREEODPRICES 
+        WHERE TRADE_DT = {date_}""")
       yyyy = date_[:4]
       mm = date_[4:6]
       self._output(f'DATA/raw_prc/{yyyy}/{mm}/raw_prc.{date_}', force_)
@@ -130,17 +130,17 @@ WHERE TRADE_DT = {date_}""")
   def output_citics_ind(self, force_= False):
     
     self.cursor.execute(f"""SELECT S_INFO_WINDCODE, CITICS_IND_CODE, ENTRY_DT, REMOVE_DT
-FROM ASHAREINDUSTRIESCLASSCITICS
-ORDER BY ENTRY_DT""")
+      FROM ASHAREINDUSTRIESCLASSCITICS
+      ORDER BY ENTRY_DT""")
     self._output(f'DATA/iso/citics_ind.iso', force_)
 
   def output_code_ind(self, force_= False):
     self.cursor.execute(f"""SELECT * FROM ASHAREINDUSTRIESCODE
-    ORDER BY LEVELNUM, INDUSTRIESCODE
-""")
+        ORDER BY LEVELNUM, INDUSTRIESCODE
+    """)
     self._output('DATA/iso/code_ind.iso', force_)
     
-  def output_shares(self, force = False):
+  def output_shares(self, force_ = False):
     self.cursor.execute(f"""SELECT S_INFO_WINDCODE, ANN_DT, CHANGE_DT, CHANGE_DT1, 
     TOT_SHR, FLOAT_SHR, NON_TRADABLE_SHR, S_SHARE_TOTALA, FLOAT_A_SHR, RESTRICTED_A_SHR,FLOAT_B_SHR, FLOAT_H_SHR, FLOAT_OVERSEAS_SHR,	
     S_SHARE_TOTALTRADABLE, S_SHARE_TOTALRESTRICTED
