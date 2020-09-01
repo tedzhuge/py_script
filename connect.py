@@ -114,6 +114,7 @@ class Cn:
     ORDER BY TRADE_DAYS""")
     self._output('DATA/iso/trade_dates.iso')
 
+
   def output_raw_prc(self, date_start=20150000, force_= False):
     dates = get_trd_dates(date_start)
     for date_ in dates:
@@ -127,25 +128,29 @@ class Cn:
       self._output(f'DATA/raw_prc/{yyyy}/{mm}/raw_prc.{date_}', force_)
       print(f'raw_prc.{date_}')
 
-  def output_citics_ind(self, force_= False):
-    
+
+  def output_citics_ind(self, force_= False):    
     self.cursor.execute(f"""SELECT S_INFO_WINDCODE, CITICS_IND_CODE, ENTRY_DT, REMOVE_DT
       FROM ASHAREINDUSTRIESCLASSCITICS
       ORDER BY ENTRY_DT""")
     self._output(f'DATA/iso/citics_ind.iso', force_)
+
 
   def output_code_ind(self, force_= False):
     self.cursor.execute(f"""SELECT * FROM ASHAREINDUSTRIESCODE
         ORDER BY LEVELNUM, INDUSTRIESCODE
     """)
     self._output('DATA/iso/code_ind.iso', force_)
-    
+
+
   def output_shares(self, force_ = False):
     self.cursor.execute(f"""SELECT S_INFO_WINDCODE, ANN_DT, CHANGE_DT, CHANGE_DT1, 
     TOT_SHR, FLOAT_SHR, NON_TRADABLE_SHR, S_SHARE_TOTALA, FLOAT_A_SHR, RESTRICTED_A_SHR,FLOAT_B_SHR, FLOAT_H_SHR, FLOAT_OVERSEAS_SHR,	
     S_SHARE_TOTALTRADABLE, S_SHARE_TOTALRESTRICTED
-      	FROM ASHARECAPITALIZATION""")
+      	FROM ASHARECAPITALIZATION
+    ORDER BY ANN_DT""")
     self._output(f'DATA/iso/shares.iso', force_)
+
 
   def output_sample(self):
     date_ = 20150105
@@ -175,21 +180,37 @@ class Cn:
     #     str_row = ','.join([str(elem) for elem in row])
     #     wf.write(f'{str_row}\n')
 
+    for date in dates:
+      yyyy = date[:4]
+      mm = date[4:6]
+      with open(f'DATA/forb/{yyyy}/{mm}/{date}', 'w') as f:
+        continue
+      print(date)
 
+      self.cursor.execute(f"""
+        SELECT a.Report_Search_ID, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
+                (SELECT Report_Search_ID, {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {date_}) a
+      LEFT JOIN (SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research WHERE EntryDate = {date_}) b
+          ON b.ID = a.Report_Search_ID
+          """) 
+      data = self.cursor.fetchall()
+      with open('c.txt', 'w') as wf:
+        for row in data:
+          str_row = ','.join([str(elem) for elem in row])
+          wf.write(f'{str_row}\n')
 
-    self.cursor.execute(f"""
-       SELECT a.Report_Search_ID, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH} FROM 
-               (SELECT Report_Search_ID, {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {date_}) a
-    LEFT JOIN (SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research WHERE EntryDate = {date_}) b
-        ON b.ID = a.Report_Search_ID
-        """) 
-    data = self.cursor.fetchall()
-    with open('c.txt', 'w') as wf:
-      for row in data:
-        str_row = ','.join([str(elem) for elem in row])
-        wf.write(f'{str_row}\n')
-
- 
+  def output_forb():
+    for yyyy in range(2015, 2023):
+      for mm in ['01', '02', '03','04','05','06','07','08','09','10','11','12']:
+        mkdir(f'DATA/forb/{yyyy}/{mm}')
+    dates = []
+    with open('DATA/iso/trade_dates.iso', 'r') as rf:
+      for ln in rf:
+        itm = ln.split(',')
+        if len(itm) > 1:
+          date = int(itm[0])
+          if date > 20150000:
+            dates.append(itm[0])
 
   def fetchall(self):
     self.data = self.cursor.fetchall()
@@ -211,28 +232,5 @@ class Cn:
       
 
 
-def create_forb():
-  for yyyy in range(2015, 2023):
-    for mm in ['01', '02', '03','04','05','06','07','08','09','10','11','12']:
-      mkdir(f'DATA/forb/{yyyy}/{mm}')
-  dates = []
-  with open('DATA/iso/trade_dates.iso', 'r') as rf:
-    for ln in rf:
-      itm = ln.split(',')
-      if len(itm) > 1:
-        date = int(itm[0])
-        if date > 20150000:
-          dates.append(itm[0])
-  
-  for date in dates:
-    yyyy = date[:4]
-    mm = date[4:6]
-    with open(f'DATA/forb/{yyyy}/{mm}/{date}', 'w') as f:
-      continue
-    print(date)
 
-#cursor.execute("SHOW DATABASES")
 
-# for x in cursor:
-#   print(x)
-# cn.close()
