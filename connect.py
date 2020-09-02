@@ -132,7 +132,7 @@ class Cn:
   def output_citics_ind(self, force_= False):    
     self.cursor.execute(f"""SELECT S_INFO_WINDCODE, CITICS_IND_CODE, ENTRY_DT, REMOVE_DT
       FROM ASHAREINDUSTRIESCLASSCITICS
-      ORDER BY ENTRY_DT""")
+      ORDER BY S_INFO_WINDCODE, ENTRY_DT""")
     self._output(f'DATA/iso/citics_ind.iso', force_)
 
 
