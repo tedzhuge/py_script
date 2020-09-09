@@ -134,7 +134,7 @@ class Cn:
       FROM ASHAREINDUSTRIESCLASSCITICS a
       ORDER BY S_INFO_WINDCODE, ENTRY_DT""")
     self._output(f'DATA/iso/citics_ind.iso', force_)
-    self.cursor.execute(f"""SELECT *
+    self.cursor.execute(f"""SELECT INDUSTRIESCODE, INDUSTRIESNAME, LEVELNUM, USED, MEMO, CHINESEDEFINITION, WIND_NAME_ENG
       FROM ASHAREINDUSTRIESCODE 
       ORDER BY INDUSTRIESCODE, LEVELNUM""")
     self._output(f'DATA/iso/industry_code.iso', force_)
@@ -228,7 +228,7 @@ class Cn:
       with open(name, 'w') as f:
         for row in data:
           
-          str_row = ','.join([str(elem) for elem in row])
+          str_row = '|'.join([str(elem) for elem in row])
           f.write(f'{str_row}\n')
     else:
       print(f"Can not write force = {force_}")
