@@ -130,11 +130,14 @@ class Cn:
 
 
   def output_citics_ind(self, force_= False):    
-    self.cursor.execute(f"""SELECT S_INFO_WINDCODE, CITICS_IND_CODE, ENTRY_DT, REMOVE_DT
-      FROM ASHAREINDUSTRIESCLASSCITICS
+    self.cursor.execute(f"""SELECT a.S_INFO_WINDCODE, a.CITICS_IND_CODE, a.ENTRY_DT, a.REMOVE_DT, a.CUR_SIGN
+      FROM ASHAREINDUSTRIESCLASSCITICS a
       ORDER BY S_INFO_WINDCODE, ENTRY_DT""")
     self._output(f'DATA/iso/citics_ind.iso', force_)
-
+    self.cursor.execute(f"""SELECT *
+      FROM ASHAREINDUSTRIESCODE 
+      ORDER BY S_INFO_WINDCODE, LEVELNUM""")
+    self._output(f'DATA/iso/industry_code.iso', force_)
 
   def output_code_ind(self, force_= False):
     self.cursor.execute(f"""SELECT * FROM ASHAREINDUSTRIESCODE
