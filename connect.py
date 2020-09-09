@@ -136,7 +136,7 @@ class Cn:
     self._output(f'DATA/iso/citics_ind.iso', force_)
     self.cursor.execute(f"""SELECT *
       FROM ASHAREINDUSTRIESCODE 
-      ORDER BY S_INFO_WINDCODE, LEVELNUM""")
+      ORDER BY INDUSTRIESCODE, LEVELNUM""")
     self._output(f'DATA/iso/industry_code.iso', force_)
 
   def output_code_ind(self, force_= False):
