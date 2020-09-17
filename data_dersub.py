@@ -125,7 +125,7 @@ class Cn:
       while calendar_dates[idx_] <= trd_date_:
         c_date_ = calendar_dates[idx_]
         
-        if start_date <= trd_date_:
+        if start_date <= int(trd_date_):
           print(f'{c_date_} into dersub.{trd_date_}')
           self.cursor.execute(f"""
           SELECT a.EntryDate, a.EntryTime, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH}, a.Report_Search_ID 
