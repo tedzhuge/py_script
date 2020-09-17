@@ -62,7 +62,7 @@ class Cn:
       dd = date_[6:8]
       mkdir(f'DATA/gg/data/{yyyy}/{mm}/{dd}')
         
-  def output_dersub(self):
+  def output_dersub(self, start_date):
     calendar_dates = get_calendar_dates()
     cd_sz = len(calendar_dates)
     trd_dates = get_trd_dates()
@@ -124,27 +124,26 @@ class Cn:
       wf.close()
       while calendar_dates[idx_] <= trd_date_:
         c_date_ = calendar_dates[idx_]
-        print(f'{c_date_} into dersub.{trd_date_}')
-        #(SELECT ID, {_itms_DER_REPORT_RESEARCH} FROM Der_Report_Research WHERE EntryDate = {c_date_}) b
-        #(SELECT  {_itms_DER_REPORT_SUBTABLE} FROM Der_Report_Subtable  WHERE EntryDate = {c_date_}) a
-        #
-        self.cursor.execute(f"""
-        SELECT a.EntryDate, a.EntryTime, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH}, a.Report_Search_ID 
-        FROM Der_Report_Subtable a
-        LEFT JOIN Der_Report_Research b
-          ON b.ID = a.Report_Search_ID
-        WHERE a.EntryDate = {c_date_} 
-        ORDER BY a.EntryDate, a.EntryTime
-        """) 
-        data = self.cursor.fetchall()
         
-        with open(output_path, 'a') as f:
-          id= 0
-          for row in data:
-            #3+15+17+1=36
-            str_row = f"{id}|{row[0].strftime('%Y%m%d')}|{row[1].replace(':','')}|{'|'.join([str(elem) for elem in row[2:]])}\n"
-            f.write(f'{str_row}')
-            id+=1
+        if start_date <= trd_date_:
+          print(f'{c_date_} into dersub.{trd_date_}')
+          self.cursor.execute(f"""
+          SELECT a.EntryDate, a.EntryTime, {itms_DER_REPORT_SUBTABLE}, {itms_DER_REPORT_RESEARCH}, a.Report_Search_ID 
+          FROM Der_Report_Subtable a
+          LEFT JOIN Der_Report_Research b
+            ON b.ID = a.Report_Search_ID
+          WHERE a.EntryDate = {c_date_} 
+          ORDER BY a.EntryDate, a.EntryTime, b.Code
+          """) 
+          data = self.cursor.fetchall()
+          
+          with open(output_path, 'a') as f:
+            id= 0
+            for row in data:
+              #3+15+17+1=36
+              str_row = f"{id}|{row[0].strftime('%Y%m%d')}|{row[1].replace(':','')}|{'|'.join([str(elem) for elem in row[2:]])}\n"
+              f.write(f'{str_row}')
+              id+=1
         idx_ += 1
       
   def output_research(self):
@@ -168,7 +167,7 @@ class Cn:
       'Score_Flag'#16
     ]
     
-    _itms_DER_REPORT_RESEARCH='|'.join(LIST_DER_REPORT_RESEARCH)
+    _itms_DER_REPORT_RESEARCH=','.join(LIST_DER_REPORT_RESEARCH)
     self.cursor.execute(f'SELECT ID, {_itms_DER_REPORT_RESEARCH},EntryDate,EntryTime FROM Der_Report_Research')
     data = self.cursor.fetchall()
     with open('DATA/gg/report.iso', 'w') as wf:
