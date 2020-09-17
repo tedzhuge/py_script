@@ -118,13 +118,13 @@ class Cn:
       yyyy = trd_date_[:4]
       mm = trd_date_[4:6]
       dd = trd_date_[6:8]
-
-      output_path = f'DATA/gg/data/{yyyy}/{mm}/{dd}/dersub.{trd_date_}'
-      wf=open(output_path, 'w')
-      wf.close()
+      if start_date <= int(trd_date_):
+        output_path = f'DATA/gg/data/{yyyy}/{mm}/{dd}/dersub.{trd_date_}'
+        wf=open(output_path, 'w')
+        wf.close()
       while calendar_dates[idx_] <= trd_date_:
         c_date_ = calendar_dates[idx_]
-        
+        idx_ += 1
         if start_date <= int(trd_date_):
           print(f'{c_date_} into dersub.{trd_date_}')
           self.cursor.execute(f"""
@@ -144,7 +144,7 @@ class Cn:
               str_row = f"{id}|{row[0].strftime('%Y%m%d')}|{row[1].replace(':','')}|{'|'.join([str(elem) for elem in row[2:]])}\n"
               f.write(f'{str_row}')
               id+=1
-        idx_ += 1
+        
       
   def output_research(self):
     LIST_DER_REPORT_RESEARCH=[
